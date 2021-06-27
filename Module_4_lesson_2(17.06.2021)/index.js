@@ -29,13 +29,13 @@
 
 // "use strict";
 
-// const orders = [
-//   { email: "solomon@topmail.ua", dish: "Burger" },
-//   { email: "artemis@coldmail.net", dish: "Pizza" },
-//   { email: "jacob@mail.com", dish: "Taco" },
-// ];
+const orders = [
+  { email: "solomon@topmail.ua", dish: "Burger" },
+  { email: "artemis@coldmail.net", dish: "Pizza" },
+  { email: "jacob@mail.com", dish: "Taco" },
+];
 
-// // Пиши код ниже этой строки
+// Пиши код ниже этой строки
 // function composeMessage(position, a, b, c, d) {
 //   console.log(`this`, this);
 //   console.log(`a`, a);
@@ -46,15 +46,31 @@
 // }
 // const messages = [];
 
+// function composeMessage(position) {
+//  return `Готовим ${this.dish} для ${this.email}. Ваш заказ ${position}-й в очереди.`
+// }
+
+// const messages = [];
+
+// for (let i = 0; i < orders.length; i += 1) {
+//     let order = orders[i];
+//     let position = i + 1;
+//     let result = composeMessage.call(order, position)
+//     messages.push(result);
+// }
+   
+
+
+// composeMessage.call(orders, 3);
+
 // for (let i = 0; i < orders.length; i += 1) {
 //   let order = orders[i];
 //   let position = i + 1;
 //   let result = composeMessage.call(order, position, 1, 2, "q", "Hello");
 //   let result = composeMessage.apply(order, [position, 1, 2, "q", "Hello"]);
 
-// //   let composeMessageBind = composeMessage.bind(order);
-// //   composeMessageBind(position, 1, 2, "q", "Hello");
-//   messages.push(result);
+//   let composeMessageBind = composeMessage.bind(order);
+//   composeMessageBind(position, 1, 2, "q", "Hello");
 // }
 // console.log(messages);
 
@@ -216,3 +232,37 @@
 // console.log(withSilverDiscount(200)); //190
 // console.log(withGoldDiscount(100)); // 90
 // console.log(withGoldDiscount(200)); // 180
+
+
+const service = {
+  mailingList: ['mango@mail.com', 'poly@hotmail.de', 'ajax@jmail.net'],
+  subscribe(email) {
+    service.mailingList.push(1);
+    return `Почта ${email} добавлена в рассылку.`;
+  },
+  unsubscribe(email) {
+    this.mailingList = this.mailingList.filter((e) => e !== email);
+    return `Почта ${email} удалена из рассылки.`;
+  },
+};
+
+function logAndInvokeAction(email, action) {
+  console.log(`Выполняем действие с ${email}.`);
+  return action(email);
+}
+
+const firstInvoke = logAndInvokeAction('kiwi@mail.uk', service.subscribe.bind(service));
+console.log(firstInvoke);
+// Почта kiwi@mail.uk добавлена в рассылку.
+
+console.log(service.mailingList);
+/* ['mango@mail.com', 
+    'poly@hotmail.de', 
+    'ajax@jmail.net', 
+    'kiwi@mail.uk']*/
+const secondInvoke = logAndInvokeAction('poly@hotmail.de', service.unsubscribe.bind(service));
+console.log(secondInvoke);
+// Почта poly@hotmail.de удалена из рассылки.
+
+console.log(service.mailingList); // ['mango@mail.com', 'ajax@jmail.net', 'kiwi@mail.uk']
+
